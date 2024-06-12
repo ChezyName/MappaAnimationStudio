@@ -40,6 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3725504692844499123}
+  - component: {fileID: 602958171878102263}
   m_Layer: 0
   m_Name: PlayerCameraSystem
   m_TagString: Player
@@ -65,6 +66,21 @@ Transform:
   - {fileID: 8302861143447930350}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &602958171878102263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271729579079159155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a62aba4ae8499c84eaec31c3d1a3e7d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinCameraClamp: {x: -100, y: -100}
+  MaxCameraClamp: {x: 100, y: 100}
+  CameraSpeed: 30
 --- !u!1 &3125602088164435395
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,9 +141,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 60, z: -40}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
+  m_XDamping: 0.25
+  m_YDamping: 0.25
+  m_ZDamping: 0.25
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
