@@ -15,11 +15,13 @@ public class CameraMovement : MonoBehaviour
     //Camera Speed (Movement Speed)
     [SerializeField]
     private float CameraSpeed = 12;
+
+    private Vector3 startingPos;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        startingPos = transform.position;
     }
 
     // Update is called once per frame
@@ -47,7 +49,7 @@ public class CameraMovement : MonoBehaviour
     {
         Gizmos.color = Color.blue;
 
-        Vector3 startingLoc = transform.position;
+        Vector3 startingLoc = startingPos;
         Vector3 topLeft = new Vector3(MinCameraClamp.x, 0, MaxCameraClamp.y) + startingLoc;
         Vector3 topRight = new Vector3(MaxCameraClamp.x, 0, MaxCameraClamp.y) + startingLoc;
         
