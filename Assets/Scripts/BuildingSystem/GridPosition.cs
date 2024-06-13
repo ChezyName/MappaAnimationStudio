@@ -12,6 +12,9 @@ public class GridPosition : MonoBehaviour
     [SerializeField]
     private LayerMask GridMask;
     
+    [SerializeField]
+    public GameObject Spawnable;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -23,9 +26,16 @@ public class GridPosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetPositionOnGrid();
-        DrawBox(lastPosition, Quaternion.identity,
-            new Vector3(1, 1, 1), Color.yellow);
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 pos = GetPositionOnGrid();
+            pos.y = 0.5f;
+            pos.x += 0.5f;
+            pos.z += 0.5f;
+            
+            Instantiate(Spawnable, pos, 
+                Quaternion.identity);
+        }
     }
 
     private Vector3 lastPosition;
@@ -39,7 +49,7 @@ public class GridPosition : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 99999, GridMask))
         {
-            if(Input.GetMouseButton(0)) lastPosition = grid.WorldToCell(hit.point);;
+           lastPosition = grid.WorldToCell(hit.point);;
             
             Debug.DrawLine(cam.transform.position, hit.point, Color.red);
         }

@@ -29,6 +29,8 @@ public class CameraMovement : MonoBehaviour
     {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
+        
+        
 
         Vector3 pos = transform.position;
 
