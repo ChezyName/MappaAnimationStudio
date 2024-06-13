@@ -14,27 +14,74 @@ public class GridPosition : MonoBehaviour
     
     [SerializeField]
     public GameObject Spawnable;
+
+    [SerializeField] private GameObject GridVisualization;
+
+    private Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
+
+    public bool buildMode = true;
     
     // Start is called before the first frame update
     void Start()
     {
         //cam = Camera.current;
         grid = GetComponent<Grid>();
+        if (grid == null)
+        {
+            grid = GetComponentInChildren<Grid>();
+        }
+        
         lastPosition = grid.WorldToCell(Vector3.zero);
+        
+        GridVisualization.SetActive(buildMode);
     }
 
+    private GameObject Vis = null;
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            Vector3 pos = GetPositionOnGrid();
-            pos.y = 0.5f;
-            pos.x += 0.5f;
-            pos.z += 0.5f;
+            buildMode = !buildMode;
+            GridVisualization.SetActive(buildMode);
+        }
+        
+        if (buildMode)
+        {
+            if (Vis == null)
+            {
+                Vector3 pos = GetPositionOnGrid();
+                pos.y = offset.y;
+                pos.x += offset.x;
+                pos.z += offset.z;
+
+                Vis = Instantiate(Spawnable, pos,
+                    Quaternion.identity);
+            }
+            else
+            {
+                Vector3 pos = GetPositionOnGrid();
+                pos.y = offset.y;
+                pos.x += offset.x;
+                pos.z += offset.z;
+                
+                Vis.transform.SetPositionAndRotation(pos, Quaternion.identity);
+            }
             
-            Instantiate(Spawnable, pos, 
-                Quaternion.identity);
+            if (Input.GetMouseButtonDown(0))
+            {
+                Vector3 pos = GetPositionOnGrid();
+                pos.y = offset.y;
+                pos.x += offset.x;
+                pos.z += offset.z;
+            
+                Instantiate(Spawnable, pos, 
+                    Quaternion.identity);
+            }
+        }
+        else
+        {
+            if(Vis != null) Destroy(Vis);
         }
     }
 
