@@ -1,7 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+
+public struct Buildable
+{
+    public bool isPlaced;
+    public GameObject Item;
+}
 
 public class GridPosition : MonoBehaviour
 {
@@ -21,6 +28,15 @@ public class GridPosition : MonoBehaviour
 
     public bool buildMode = true;
     
+    //Grid Item Spawnables
+    private Buildable[,] SpawnList;
+
+    [SerializeField]
+    private Vector2 BottomLeftCornerXY = new Vector2(0, 0);
+    
+    [SerializeField]
+    private Vector2 TopRightCornerXY = new Vector2(10, 10);
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +50,10 @@ public class GridPosition : MonoBehaviour
         lastPosition = grid.WorldToCell(Vector3.zero);
         
         GridVisualization.SetActive(buildMode);
+
+        int x = (int)(-BottomLeftCornerXY.x + TopRightCornerXY.x);
+        int y = (int)(-BottomLeftCornerXY.x + TopRightCornerXY.x);
+        SpawnList = new Buildable[x,y];
     }
 
     private GameObject Vis = null;
@@ -44,6 +64,7 @@ public class GridPosition : MonoBehaviour
         {
             buildMode = !buildMode;
             GridVisualization.SetActive(buildMode);
+            Destroy(Vis);
         }
         
         if (buildMode)
@@ -71,12 +92,27 @@ public class GridPosition : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 Vector3 pos = GetPositionOnGrid();
-                pos.y = offset.y;
-                pos.x += offset.x;
-                pos.z += offset.z;
+                
+                //Debug.Log(pos);
+                
+                int x = (int) pos.x + (int) -BottomLeftCornerXY.x;
+                int y = (int) pos.z + (int) -BottomLeftCornerXY.y;
+                
+                //Debug.Log(x + ", " + y);
+                
+                if (!SpawnList[x,y].isPlaced)
+                {
+                    pos.y = offset.y;
+                    pos.x += offset.x;
+                    pos.z += offset.z;
             
-                Instantiate(Spawnable, pos, 
-                    Quaternion.identity);
+                    GameObject spawned = Instantiate(Spawnable, pos, 
+                        Quaternion.identity);
+
+                    SpawnList[x,y].isPlaced = true;
+                    SpawnList[x,y].Item = spawned;
+                }
+                else Debug.Log("Cannot Spawn At Location: " + pos);
             }
         }
         else
