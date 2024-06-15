@@ -204,3 +204,5 @@ MonoBehaviour:
     type: 3}
   GridVisualization: {fileID: 3215702963064737250}
   buildMode: 0
+  BottomLeftCornerXY: {x: -10, y: -10}
+  TopRightCornerXY: {x: 10, y: 10}

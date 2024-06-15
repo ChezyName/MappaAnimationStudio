@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
@@ -18,10 +19,13 @@ public class CameraMovement : MonoBehaviour
 
     private Vector3 startingPos;
     
+    private CinemachineVirtualCamera cam;
+    
     // Start is called before the first frame update
     void Start()
     {
         startingPos = transform.position;
+        cam = GetComponentInChildren<CinemachineVirtualCamera>();
     }
 
     // Update is called once per frame
@@ -34,7 +38,7 @@ public class CameraMovement : MonoBehaviour
 
         Vector3 pos = new Vector3(
             x * Time.deltaTime * CameraSpeed,
-            -Zoom * Time.deltaTime * (CameraSpeed*25),
+            0,
             y * Time.deltaTime * CameraSpeed
         );
         
@@ -44,6 +48,12 @@ public class CameraMovement : MonoBehaviour
         
         transform.Translate(pos);
         transform.Rotate(Vector3.up,-r * (CameraSpeed*4) * Time.deltaTime);
+
+        cam.m_Lens.FieldOfView = Math.Clamp(
+            cam.m_Lens.FieldOfView + -Zoom * CameraSpeed * Time.deltaTime * 150,
+            20,
+            60
+        );
     }
 
     private void OnDrawGizmos()

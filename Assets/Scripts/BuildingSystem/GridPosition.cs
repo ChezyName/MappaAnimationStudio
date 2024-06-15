@@ -40,7 +40,7 @@ public class GridPosition : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //cam = Camera.current;
+        if(cam == null) cam = Camera.current;
         grid = GetComponent<Grid>();
         if (grid == null)
         {
