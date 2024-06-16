@@ -36,17 +36,20 @@ public class CameraMovement : MonoBehaviour
         float Zoom = Input.GetAxisRaw("Mouse ScrollWheel");
         float r = Input.GetAxis("QE");
 
-        Vector3 pos = new Vector3(
+        Vector3 movePos = new Vector3(
             x * Time.deltaTime * CameraSpeed,
             0,
             y * Time.deltaTime * CameraSpeed
         );
         
+        transform.Translate(movePos);
+        
+        //Clamp Pos
+        Vector3 pos = transform.position;
         pos.x = Math.Clamp(pos.x, MinCameraClamp.x, MaxCameraClamp.x);
         pos.z = Math.Clamp(pos.z, MinCameraClamp.y, MaxCameraClamp.y);
-        pos.y = Math.Clamp(pos.y, -5, 15);
+        transform.position = pos;
         
-        transform.Translate(pos);
         transform.Rotate(Vector3.up,-r * (CameraSpeed*4) * Time.deltaTime);
 
         cam.m_Lens.FieldOfView = Math.Clamp(
