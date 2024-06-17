@@ -10,6 +10,13 @@ public struct Buildable
     public GameObject Item;
 }
 
+public struct Wall
+{
+    public bool isPlaced;
+    public GameObject Item;
+    public int Rotation;
+}
+
 public class GridPosition : MonoBehaviour
 {
     [SerializeField]
@@ -20,9 +27,10 @@ public class GridPosition : MonoBehaviour
     private LayerMask GridMask;
     
     [SerializeField]
-    public GameObject Spawnable;
+    public Placeable Spawnable;
 
-    [SerializeField] private GameObject GridVisualization;
+    [SerializeField]
+    private GameObject GridVisualization;
 
     private Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
 
@@ -30,12 +38,20 @@ public class GridPosition : MonoBehaviour
     
     //Grid Item Spawnables
     private Buildable[,] SpawnList;
+    private Wall[,] WallList;
 
     [SerializeField]
     private Vector2 BottomLeftCornerXY = new Vector2(0, 0);
     
     [SerializeField]
     private Vector2 TopRightCornerXY = new Vector2(10, 10);
+
+    //0 = 0
+    //1 = 90
+    //2 = 180
+    //3 = 360
+    public int RotationModifier = 0;
+    public Quaternion Rotation;
     
     // Start is called before the first frame update
     void Start()
@@ -54,12 +70,29 @@ public class GridPosition : MonoBehaviour
         int x = (int)(-BottomLeftCornerXY.x + TopRightCornerXY.x);
         int y = (int)(-BottomLeftCornerXY.x + TopRightCornerXY.x);
         SpawnList = new Buildable[x,y];
+        WallList = new Wall[x, y];
+
+        Rotation = Quaternion.identity;
+    }
+
+    private bool checkIfWallPlaced(int x, int y,int RotationMod)
+    {
+        Wall wall = WallList[x, y];
+        if (wall.isPlaced)
+        {
+            if (wall.Rotation == RotationMod) return true;
+            return false;
+        }
+        return false;
     }
 
     private GameObject Vis = null;
     // Update is called once per frame
     void Update()
     {
+        if(buildMode) GetPositionOnGrid();
+        
+        
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             buildMode = !buildMode;
@@ -69,29 +102,43 @@ public class GridPosition : MonoBehaviour
         
         if (buildMode)
         {
+            if (Input.GetButtonDown("Rotate"))
+            {
+                RotationModifier++;
+                if (RotationModifier > 3) RotationModifier = 0;
+
+                int rot = RotationModifier == 0 ? 0 :
+                    RotationModifier == 1 ? 90 :
+                    RotationModifier == 2 ? 180 :
+                    RotationModifier == 3 ? 270 : 0;
+                Rotation = Quaternion.AngleAxis(rot, Vector3.up);
+            }
+            
             if (Vis == null)
             {
-                Vector3 pos = GetPositionOnGrid();
+                Vector3 pos = lastPosition;
                 pos.y = offset.y;
                 pos.x += offset.x;
                 pos.z += offset.z;
 
-                Vis = Instantiate(Spawnable, pos,
-                    Quaternion.identity);
+                Vis = Instantiate(Spawnable.Spawnable, pos,
+                    Rotation);
             }
             else
             {
-                Vector3 pos = GetPositionOnGrid();
+                Vector3 pos = lastPosition;
                 pos.y = offset.y;
                 pos.x += offset.x;
                 pos.z += offset.z;
                 
-                Vis.transform.SetPositionAndRotation(pos, Quaternion.identity);
+                Vis.transform.SetPositionAndRotation(pos, Rotation);
             }
             
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButton(0))
             {
                 Vector3 pos = GetPositionOnGrid();
+                Debug.Log(pos);
+                if (pos == new Vector3(-9999, -9999, -9999)) return;
                 
                 //Debug.Log(pos);
                 
@@ -99,20 +146,41 @@ public class GridPosition : MonoBehaviour
                 int y = (int) pos.z + (int) -BottomLeftCornerXY.y;
                 
                 //Debug.Log(x + ", " + y);
-                
-                if (!SpawnList[x,y].isPlaced)
-                {
-                    pos.y = offset.y;
-                    pos.x += offset.x;
-                    pos.z += offset.z;
-            
-                    GameObject spawned = Instantiate(Spawnable, pos, 
-                        Quaternion.identity);
 
-                    SpawnList[x,y].isPlaced = true;
-                    SpawnList[x,y].Item = spawned;
+                Debug.Log("Placing Something!");
+                if (Spawnable.isWall)
+                {
+                    Debug.Log("Wall!");
+                    if (!checkIfWallPlaced(x,y,RotationModifier))
+                    {
+                        pos.y = offset.y;
+                        pos.x += offset.x;
+                        pos.z += offset.z;
+            
+                        GameObject spawned = Instantiate(Spawnable.Spawnable, pos, 
+                            Rotation);
+
+                        WallList[x,y].isPlaced = true;
+                        WallList[x,y].Item = spawned;
+                        WallList[x, y].Rotation = RotationModifier;
+                    }
                 }
-                else Debug.Log("Cannot Spawn At Location: " + pos);
+                else
+                {
+                    Debug.Log("not Wall!");
+                    if (!SpawnList[x,y].isPlaced)
+                    {
+                        pos.y = offset.y;
+                        pos.x += offset.x;
+                        pos.z += offset.z;
+            
+                        GameObject spawned = Instantiate(Spawnable.Spawnable, pos, 
+                            Rotation);
+
+                        SpawnList[x,y].isPlaced = true;
+                        SpawnList[x,y].Item = spawned;
+                    }
+                }
             }
         }
         else
@@ -133,11 +201,11 @@ public class GridPosition : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 99999, GridMask))
         {
            lastPosition = grid.WorldToCell(hit.point);;
-            
-            Debug.DrawLine(cam.transform.position, hit.point, Color.red);
+           Debug.DrawLine(cam.transform.position, hit.point, Color.red);
+           return lastPosition;
         }
 
-        return lastPosition;
+        return new Vector3(-9999,-9999,-9999);
     }
     
     public void DrawBox(Vector3 pos, Quaternion rot, Vector3 scale, Color c)
