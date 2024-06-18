@@ -136,6 +136,13 @@ public class GridPosition : MonoBehaviour
             
             if (Input.GetMouseButton(0))
             {
+                int cMoney = GlobalGameState.getGameState().getMoney();
+                if (cMoney < Spawnable.Cost)
+                {
+                    Debug.Log("You Are Broke");
+                    return;
+                }
+                
                 Vector3 pos = GetPositionOnGrid();
                 Debug.Log(pos);
                 if (pos == new Vector3(-9999, -9999, -9999)) return;
