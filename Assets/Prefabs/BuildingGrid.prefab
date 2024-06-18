@@ -200,9 +200,10 @@ MonoBehaviour:
   GridMask:
     serializedVersion: 2
     m_Bits: 64
-  Spawnable: {fileID: 6978125010443499455, guid: f4a2ce3c8017a1b4d91d7bb4bf79dd2e,
-    type: 3}
+  Spawnable: {fileID: 11400000, guid: 13967c785bbe95b408693dc20304b0de, type: 2}
   GridVisualization: {fileID: 3215702963064737250}
   buildMode: 0
   BottomLeftCornerXY: {x: -10, y: -10}
   TopRightCornerXY: {x: 10, y: 10}
+  RotationModifier: 0
+  Rotation: {x: 0, y: 0, z: 0, w: 0}

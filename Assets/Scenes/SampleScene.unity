@@ -464,12 +464,6 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 1196772334}
-    - target: {fileID: 6815987862086620864, guid: f3dca54ad8c30d8428e71e69f9f809f4,
-        type: 3}
-      propertyPath: Spawnable
-      value: 
-      objectReference: {fileID: 11400000, guid: 13967c785bbe95b408693dc20304b0de,
-        type: 2}
     - target: {fileID: 8338365929850120487, guid: f3dca54ad8c30d8428e71e69f9f809f4,
         type: 3}
       propertyPath: m_Name
@@ -488,26 +482,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 602958171878102263, guid: 0616b7205a180684daf8a9052ae6a876,
-        type: 3}
-      propertyPath: MaxCameraClamp.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 602958171878102263, guid: 0616b7205a180684daf8a9052ae6a876,
-        type: 3}
-      propertyPath: MaxCameraClamp.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 602958171878102263, guid: 0616b7205a180684daf8a9052ae6a876,
-        type: 3}
-      propertyPath: MinCameraClamp.x
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 602958171878102263, guid: 0616b7205a180684daf8a9052ae6a876,
-        type: 3}
-      propertyPath: MinCameraClamp.y
-      value: -10
-      objectReference: {fileID: 0}
     - target: {fileID: 1271729579079159155, guid: 0616b7205a180684daf8a9052ae6a876,
         type: 3}
       propertyPath: m_Name
