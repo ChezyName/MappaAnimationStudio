@@ -519,6 +519,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ControlableWorker
       objectReference: {fileID: 0}
+    - target: {fileID: 5732931150708182958, guid: 25942a181acfffb4e880deefeca3f8fd,
+        type: 3}
+      propertyPath: m_Acceleration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732931150708182958, guid: 25942a181acfffb4e880deefeca3f8fd,
+        type: 3}
+      propertyPath: m_AngularSpeed
+      value: 360
+      objectReference: {fileID: 0}
     - target: {fileID: 6507559850452391753, guid: 25942a181acfffb4e880deefeca3f8fd,
         type: 3}
       propertyPath: cam
@@ -532,7 +542,7 @@ PrefabInstance:
     - target: {fileID: 7015853107733608717, guid: 25942a181acfffb4e880deefeca3f8fd,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.6
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7015853107733608717, guid: 25942a181acfffb4e880deefeca3f8fd,
         type: 3}
