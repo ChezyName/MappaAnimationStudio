@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class GlobalGameState : MonoBehaviour
 {
     private int Money;
     private static GlobalGameState GGS;
+    private List<GameObject> Workers;
     
     private void Awake()
     {
@@ -14,6 +16,11 @@ public class GlobalGameState : MonoBehaviour
             GGS = this;
             DontDestroyOnLoad(this);
         }
+    }
+
+    public void addWorker(GameObject newWorker)
+    {
+        Workers.Add(newWorker);
     }
 
     public static GlobalGameState getGameState()

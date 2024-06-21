@@ -25,6 +25,8 @@ public class TestWalk : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             Vector3 mousePosition = Input.mousePosition;
+            if (cam == null) cam = FindFirstObjectByType<Camera>();
+            
             mousePosition.z = cam.nearClipPlane;
 
             Ray ray = cam.ScreenPointToRay(mousePosition);

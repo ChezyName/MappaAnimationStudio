@@ -205,5 +205,6 @@ MonoBehaviour:
   buildMode: 0
   BottomLeftCornerXY: {x: -10, y: -10}
   TopRightCornerXY: {x: 10, y: 10}
-  RotationModifier: 0
-  Rotation: {x: 0, y: 0, z: 0, w: 0}
+  defaultWalls: {fileID: 11400000, guid: 13967c785bbe95b408693dc20304b0de, type: 2}
+  DoorLocation: {x: 9, y: 0}
+  spawnWallsOnStart: 1

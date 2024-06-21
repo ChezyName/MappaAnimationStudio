@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 public struct Buildable
 {
@@ -50,8 +51,15 @@ public class GridPosition : MonoBehaviour
     //1 = 90
     //2 = 180
     //3 = 360
-    public int RotationModifier = 0;
-    public Quaternion Rotation;
+    private int RotationModifier = 0;
+    private Quaternion Rotation;
+    
+    [Header("Default Wall Spawning")]
+    [SerializeField]
+    private Placeable defaultWalls;
+
+    [SerializeField] private Vector2Int DoorLocation;
+    [SerializeField] private bool spawnWallsOnStart = true;
     
     // Start is called before the first frame update
     void Start()
@@ -67,12 +75,85 @@ public class GridPosition : MonoBehaviour
         
         GridVisualization.SetActive(buildMode);
 
-        int x = (int)(-BottomLeftCornerXY.x + TopRightCornerXY.x);
-        int y = (int)(-BottomLeftCornerXY.x + TopRightCornerXY.x);
-        SpawnList = new Buildable[x,y];
-        WallList = new Wall[x, y];
+        int Buildx = (int)(-BottomLeftCornerXY.x + TopRightCornerXY.x);
+        int Buildy = (int)(-BottomLeftCornerXY.x + TopRightCornerXY.x);
+        SpawnList = new Buildable[Buildx,Buildy];
+        WallList = new Wall[Buildx, Buildy];
 
         Rotation = Quaternion.identity;
+        
+        
+        //Spawn Walls at Start
+        if (spawnWallsOnStart && defaultWalls != null)
+        {
+            //get all edges and spawn walls
+            for (int iy = 0; iy < WallList.GetLength(1); iy++)
+            {
+                for (int ix = 0; ix < WallList.GetLength(0); ix++)
+                {
+                    int x = ix + (int) + BottomLeftCornerXY.x;
+                    int y = iy + (int) + BottomLeftCornerXY.y;
+
+                    //Skip if Spawn Door Location
+                    if (DoorLocation.x == x && DoorLocation.y == y)
+                    {
+                        //Debug.Log("Creating Door Hole @ (" + x + ", " + y + ")");
+                    }
+                    else
+                    {
+                        if (iy == 0 || iy == (WallList.GetLength(1) - 1))
+                        {
+                            //Debug.Log("Vert Walls - (" + x + ", " + y + ")");
+                            
+                            RotationModifier = iy == 0 ? 1 : 3;
+                            
+                            int rot = RotationModifier == 0 ? 0 :
+                                RotationModifier == 1 ? 90 :
+                                RotationModifier == 2 ? 180 :
+                                RotationModifier == 3 ? 270 : 0;
+                            Rotation = Quaternion.AngleAxis(rot, Vector3.up);
+
+                            Vector3 pos = new Vector3(x, 0, y);
+                            pos.y = offset.y;
+                            pos.x += offset.x;
+                            pos.z += offset.z;
+                
+                            GameObject spawned = Instantiate(Spawnable.Spawnable, pos, 
+                                Rotation);
+
+                            WallList[ix,iy].isPlaced = true;
+                            WallList[ix,iy].Item = spawned;
+                            WallList[ix,iy].Rotation = RotationModifier;
+                        }
+
+                        if (ix == 0 || ix == (WallList.GetLength(0) - 1))
+                        {
+                            //Debug.Log("Horz Walls - (" + x + ", " + y + ")");
+                            
+                            RotationModifier = ix == 0 ? 2 : 4;
+                            
+                            int rot = RotationModifier == 0 ? 0 :
+                                RotationModifier == 1 ? 90 :
+                                RotationModifier == 2 ? 180 :
+                                RotationModifier == 3 ? 270 : 0;
+                            Rotation = Quaternion.AngleAxis(rot, Vector3.up);
+
+                            Vector3 pos = new Vector3(x, 0, y);
+                            pos.y = offset.y;
+                            pos.x += offset.x;
+                            pos.z += offset.z;
+                
+                            GameObject spawned = Instantiate(Spawnable.Spawnable, pos, 
+                                Rotation);
+
+                            WallList[ix,iy].isPlaced = true;
+                            WallList[ix,iy].Item = spawned;
+                            WallList[ix,iy].Rotation = RotationModifier;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private bool checkIfWallPlaced(int x, int y,int RotationMod)
@@ -123,6 +204,12 @@ public class GridPosition : MonoBehaviour
 
                 Vis = Instantiate(Spawnable.Spawnable, pos,
                     Rotation);
+
+                Destroy(Vis.GetComponent<NavMeshObstacle>());
+                Destroy(Vis.GetComponent<Collider>());
+                
+                Destroy(Vis.GetComponentInChildren<NavMeshObstacle>());
+                Destroy(Vis.GetComponentInChildren<Collider>());
             }
             else
             {
@@ -139,12 +226,12 @@ public class GridPosition : MonoBehaviour
                 int cMoney = GlobalGameState.getGameState().getMoney();
                 if (cMoney < Spawnable.Cost)
                 {
-                    Debug.Log("You Are Broke");
+                    //Debug.Log("You Are Broke");
                     return;
                 }
                 
                 Vector3 pos = GetPositionOnGrid();
-                Debug.Log(pos);
+                //Debug.Log(pos);
                 if (pos == new Vector3(-9999, -9999, -9999)) return;
                 
                 //Debug.Log(pos);
@@ -154,10 +241,10 @@ public class GridPosition : MonoBehaviour
                 
                 //Debug.Log(x + ", " + y);
 
-                Debug.Log("Placing Something!");
+                //Debug.Log("Placing Something!");
                 if (Spawnable.isWall)
                 {
-                    Debug.Log("Wall!");
+                    //Debug.Log("Wall!");
                     if (!checkIfWallPlaced(x,y,RotationModifier))
                     {
                         pos.y = offset.y;
@@ -174,7 +261,7 @@ public class GridPosition : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("not Wall!");
+                    //Debug.Log("not Wall!");
                     if (!SpawnList[x,y].isPlaced)
                     {
                         pos.y = offset.y;
@@ -208,7 +295,7 @@ public class GridPosition : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 99999, GridMask))
         {
            lastPosition = grid.WorldToCell(hit.point);;
-           Debug.DrawLine(cam.transform.position, hit.point, Color.red);
+           //Debug.DrawLine(cam.transform.position, hit.point, Color.red);
            return lastPosition;
         }
 
@@ -231,20 +318,20 @@ public class GridPosition : MonoBehaviour
         var point7 = m.MultiplyPoint(new Vector3(0.5f, 0.5f, -0.5f));
         var point8 = m.MultiplyPoint(new Vector3(-0.5f, 0.5f, -0.5f));
  
-        Debug.DrawLine(point1, point2, c);
-        Debug.DrawLine(point2, point3, c);
-        Debug.DrawLine(point3, point4, c);
-        Debug.DrawLine(point4, point1, c);
+        //Debug.DrawLine(point1, point2, c);
+        //Debug.DrawLine(point2, point3, c);
+        //Debug.DrawLine(point3, point4, c);
+        //Debug.DrawLine(point4, point1, c);
  
-        Debug.DrawLine(point5, point6, c);
-        Debug.DrawLine(point6, point7, c);
-        Debug.DrawLine(point7, point8, c);
-        Debug.DrawLine(point8, point5, c);
+        //Debug.DrawLine(point5, point6, c);
+        //Debug.DrawLine(point6, point7, c);
+        //Debug.DrawLine(point7, point8, c);
+        //Debug.DrawLine(point8, point5, c);
  
-        Debug.DrawLine(point1, point5, c);
-        Debug.DrawLine(point2, point6, c);
-        Debug.DrawLine(point3, point7, c);
-        Debug.DrawLine(point4, point8, c);
+        //Debug.DrawLine(point1, point5, c);
+        //Debug.DrawLine(point2, point6, c);
+        //Debug.DrawLine(point3, point7, c);
+        //Debug.DrawLine(point4, point8, c);
  
         // optional axis display
         //Debug.DrawRay(m.GetPosition(), m.GetForward(), Color.magenta);
