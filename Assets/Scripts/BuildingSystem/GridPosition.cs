@@ -57,13 +57,26 @@ public class GridPosition : MonoBehaviour
     [Header("Default Wall Spawning")]
     [SerializeField]
     private Placeable defaultWalls;
+    [SerializeField]
+    private Placeable fireExit;
+
+    [SerializeField] private int FireExitRotation = 0;
 
     [SerializeField] private Vector2Int DoorLocation;
     [SerializeField] private bool spawnWallsOnStart = true;
+
+    private GameObject placeableHolder;
+    private GameObject defaultWallHolder;
     
     // Start is called before the first frame update
     void Start()
     {
+        placeableHolder = new GameObject("Placeables");
+        placeableHolder.transform.parent = transform;
+        
+        defaultWallHolder = new GameObject("Default Walls");
+        defaultWallHolder.transform.parent = transform;
+        
         if(cam == null) cam = Camera.current;
         grid = GetComponent<Grid>();
         if (grid == null)
@@ -98,6 +111,25 @@ public class GridPosition : MonoBehaviour
                     if (DoorLocation.x == x && DoorLocation.y == y)
                     {
                         //Debug.Log("Creating Door Hole @ (" + x + ", " + y + ")");
+                        RotationModifier = FireExitRotation;
+                            
+                        int rot = RotationModifier == 0 ? 0 :
+                            RotationModifier == 1 ? 90 :
+                            RotationModifier == 2 ? 180 :
+                            RotationModifier == 3 ? 270 : 0;
+                        Rotation = Quaternion.AngleAxis(rot, Vector3.up);
+
+                        Vector3 pos = new Vector3(x, 0, y);
+                        pos.y = offset.y;
+                        pos.x += offset.x;
+                        pos.z += offset.z;
+                
+                        GameObject spawned = Instantiate(fireExit.Spawnable, pos, 
+                            Rotation, defaultWallHolder.transform);
+
+                        WallList[ix,iy].isPlaced = true;
+                        WallList[ix,iy].Item = spawned;
+                        WallList[ix,iy].Rotation = RotationModifier;
                     }
                     else
                     {
@@ -118,8 +150,8 @@ public class GridPosition : MonoBehaviour
                             pos.x += offset.x;
                             pos.z += offset.z;
                 
-                            GameObject spawned = Instantiate(Spawnable.Spawnable, pos, 
-                                Rotation);
+                            GameObject spawned = Instantiate(defaultWalls.Spawnable, pos, 
+                                Rotation, defaultWallHolder.transform);
 
                             WallList[ix,iy].isPlaced = true;
                             WallList[ix,iy].Item = spawned;
@@ -143,8 +175,8 @@ public class GridPosition : MonoBehaviour
                             pos.x += offset.x;
                             pos.z += offset.z;
                 
-                            GameObject spawned = Instantiate(Spawnable.Spawnable, pos, 
-                                Rotation);
+                            GameObject spawned = Instantiate(defaultWalls.Spawnable, pos, 
+                                Rotation, defaultWallHolder.transform);
 
                             WallList[ix,iy].isPlaced = true;
                             WallList[ix,iy].Item = spawned;
@@ -154,6 +186,15 @@ public class GridPosition : MonoBehaviour
                 }
             }
         }
+        
+        //reset rotation
+        RotationModifier = 0;
+
+        int finalRot = RotationModifier == 0 ? 0 :
+            RotationModifier == 1 ? 90 :
+            RotationModifier == 2 ? 180 :
+            RotationModifier == 3 ? 270 : 0;
+        Rotation = Quaternion.AngleAxis(finalRot, Vector3.up);
     }
 
     private bool checkIfWallPlaced(int x, int y,int RotationMod)
@@ -203,7 +244,7 @@ public class GridPosition : MonoBehaviour
                 pos.z += offset.z;
 
                 Vis = Instantiate(Spawnable.Spawnable, pos,
-                    Rotation);
+                    Rotation, placeableHolder.transform);
 
                 Destroy(Vis.GetComponent<NavMeshObstacle>());
                 Destroy(Vis.GetComponent<Collider>());
@@ -252,7 +293,7 @@ public class GridPosition : MonoBehaviour
                         pos.z += offset.z;
             
                         GameObject spawned = Instantiate(Spawnable.Spawnable, pos, 
-                            Rotation);
+                            Rotation, placeableHolder.transform);
 
                         WallList[x,y].isPlaced = true;
                         WallList[x,y].Item = spawned;
@@ -269,7 +310,7 @@ public class GridPosition : MonoBehaviour
                         pos.z += offset.z;
             
                         GameObject spawned = Instantiate(Spawnable.Spawnable, pos, 
-                            Rotation);
+                            Rotation, placeableHolder.transform);
 
                         SpawnList[x,y].isPlaced = true;
                         SpawnList[x,y].Item = spawned;
