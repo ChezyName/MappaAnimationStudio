@@ -6,6 +6,8 @@ public class GlobalGameState : MonoBehaviour
     private int Money;
     private static GlobalGameState GGS;
     private List<GameObject> Workers;
+    public bool isBuildMode = false;
+    public Placeable currentPlaceable;
     
     private void Awake()
     {

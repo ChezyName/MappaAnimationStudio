@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public struct Buildable
 {
@@ -219,6 +220,7 @@ public class GridPosition : MonoBehaviour
         {
             buildMode = !buildMode;
             GridVisualization.SetActive(buildMode);
+            GlobalGameState.getGameState().isBuildMode = buildMode;
             Destroy(Vis);
         }
         
@@ -234,6 +236,30 @@ public class GridPosition : MonoBehaviour
                     RotationModifier == 2 ? 180 :
                     RotationModifier == 3 ? 270 : 0;
                 Rotation = Quaternion.AngleAxis(rot, Vector3.up);
+            }
+
+            if (GlobalGameState.getGameState().currentPlaceable != Spawnable)
+            {
+                Destroy(Vis);
+                
+                Spawnable = GlobalGameState.getGameState().currentPlaceable;
+                
+                Vector3 pos = lastPosition;
+                pos.y = offset.y;
+                pos.x += offset.x;
+                pos.z += offset.z;
+
+                Vis = Instantiate(Spawnable.Spawnable, pos,
+                    Rotation, placeableHolder.transform);
+
+                Destroy(Vis.GetComponent<NavMeshObstacle>());
+                Destroy(Vis.GetComponent<Collider>());
+                
+                Destroy(Vis.GetComponentInChildren<NavMeshObstacle>());
+                Destroy(Vis.GetComponentInChildren<Collider>());
+                
+                Destroy(Vis.GetComponentInChildren<HingeJoint>());
+                Destroy(Vis.GetComponentInChildren<Rigidbody>());
             }
             
             if (Vis == null)
@@ -251,6 +277,9 @@ public class GridPosition : MonoBehaviour
                 
                 Destroy(Vis.GetComponentInChildren<NavMeshObstacle>());
                 Destroy(Vis.GetComponentInChildren<Collider>());
+                
+                Destroy(Vis.GetComponentInChildren<HingeJoint>());
+                Destroy(Vis.GetComponentInChildren<Rigidbody>());
             }
             else
             {
@@ -329,6 +358,8 @@ public class GridPosition : MonoBehaviour
     {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition.z = cam.nearClipPlane;
+        
+        if(EventSystem.current.IsPointerOverGameObject()) return new Vector3(-9999,-9999,-9999); 
 
         Ray ray = cam.ScreenPointToRay(mousePosition);
         RaycastHit hit;

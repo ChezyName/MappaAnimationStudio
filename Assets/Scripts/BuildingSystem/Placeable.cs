@@ -8,4 +8,7 @@ public class Placeable : ScriptableObject
     public GameObject Spawnable;
     public bool isWall = false;
     public int Cost = 0;
+
+    public string Name;
+    public string Description;
 }
