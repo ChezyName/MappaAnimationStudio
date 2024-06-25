@@ -346,6 +346,10 @@ public class GridPosition : MonoBehaviour
                     }
                 }
             }
+            else if (Input.GetMouseButton(1))
+            {
+                //Destroy Currently Selected
+            }
         }
         else
         {
