@@ -15,4 +15,7 @@ MonoBehaviour:
   Spawnable: {fileID: 769227276531465800, guid: b86fb7fdcd5e9f049979188ed2a9b253,
     type: 3}
   isWall: 1
+  isDestructible: 0
   Cost: 0
+  Name: 
+  Description: 

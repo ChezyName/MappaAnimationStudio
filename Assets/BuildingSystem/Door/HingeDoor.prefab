@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5253616029500547134}
+  - component: {fileID: 8744553409337930248}
   m_Layer: 0
   m_Name: HingeDoor
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 7421864908686814047}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8744553409337930248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7822855089342523994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42727681542ddaa40b081e86409509f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlaceableData: {fileID: 11400000, guid: 5aa8296f562d532469edc9672682f601, type: 2}
 --- !u!1 &7904963463821570533
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class Placeable : ScriptableObject
 {
     public GameObject Spawnable;
     public bool isWall = false;
+    public bool isDestructible = true;
     public int Cost = 0;
 
     public string Name;

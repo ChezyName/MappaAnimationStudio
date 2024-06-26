@@ -48,6 +48,9 @@ public class GridPosition : MonoBehaviour
     [SerializeField]
     private Vector2 TopRightCornerXY = new Vector2(10, 10);
 
+    [SerializeField] private LayerMask Wall = 7;
+    [SerializeField] private LayerMask Placeable = 8;
+
     //0 = 0
     //1 = 90
     //2 = 180
@@ -131,6 +134,8 @@ public class GridPosition : MonoBehaviour
                         WallList[ix,iy].isPlaced = true;
                         WallList[ix,iy].Item = spawned;
                         WallList[ix,iy].Rotation = RotationModifier;
+
+                        
                     }
                     else
                     {
@@ -157,6 +162,8 @@ public class GridPosition : MonoBehaviour
                             WallList[ix,iy].isPlaced = true;
                             WallList[ix,iy].Item = spawned;
                             WallList[ix,iy].Rotation = RotationModifier;
+                            
+                            
                         }
 
                         if (ix == 0 || ix == (WallList.GetLength(0) - 1))
@@ -240,7 +247,7 @@ public class GridPosition : MonoBehaviour
 
             if (GlobalGameState.getGameState().currentPlaceable != Spawnable)
             {
-                Destroy(Vis);
+                if(Vis != null) Destroy(Vis);
                 
                 Spawnable = GlobalGameState.getGameState().currentPlaceable;
                 
@@ -248,6 +255,8 @@ public class GridPosition : MonoBehaviour
                 pos.y = offset.y;
                 pos.x += offset.x;
                 pos.z += offset.z;
+                
+                if (Spawnable == null || Spawnable.Spawnable == null) return;
 
                 Vis = Instantiate(Spawnable.Spawnable, pos,
                     Rotation, placeableHolder.transform);
@@ -264,6 +273,8 @@ public class GridPosition : MonoBehaviour
             
             if (Vis == null)
             {
+                if (Spawnable == null || Spawnable.Spawnable == null) return;
+                
                 Vector3 pos = lastPosition;
                 pos.y = offset.y;
                 pos.x += offset.x;
@@ -346,9 +357,11 @@ public class GridPosition : MonoBehaviour
                     }
                 }
             }
-            else if (Input.GetMouseButton(1))
+            
+            if (Input.GetMouseButton(1))
             {
                 //Destroy Currently Selected
+                DestroyAtMouseLoc();
             }
         }
         else
@@ -376,6 +389,90 @@ public class GridPosition : MonoBehaviour
         }
 
         return new Vector3(-9999,-9999,-9999);
+    }
+
+    public void DestroyAtMouseLoc()
+    {
+        Debug.Log("Destroying A Wall or Placeable!");
+        
+        if (Vis != null)
+        {
+            Destroy(Vis);
+        }
+        
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = cam.nearClipPlane;
+        
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        Ray ray = cam.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 99999, Wall))
+        {
+            //Destroy This Object [WALL]
+            Vector3 loc = hit.transform.root.position;
+            //REVERSE OF PREVIOUS
+            loc.y = offset.y;
+            loc.x -= offset.x;
+            loc.z -= offset.z;
+            
+            //if(isBorderWall((int) loc.x,(int) loc.y)) return;
+            
+            Debug.Log("[w.d] Destroying: " + hit.transform.name);
+            
+            GameObject hitObj = hit.transform.GetComponentInParent<PlaceableHolder>().gameObject;
+            if (hitObj == null) hitObj = hit.transform.GetComponentInChildren<PlaceableHolder>().gameObject;
+
+            if (hitObj.GetComponent<PlaceableHolder>().PlaceableData.isDestructible == false) return;
+            
+            Debug.Log("[w] Destroying: " + hitObj.name);
+            Destroy(hitObj);
+            
+
+            WallList[(int) loc.x,(int) loc.y].isPlaced = false;
+            WallList[(int) loc.x,(int) loc.y].Item = null;
+            
+            return;
+        }
+        
+        if (Physics.Raycast(ray, out hit, 99999, Placeable))
+        {
+            //Destroy This Object [PLACEABLE]
+            Vector3 loc = hit.transform.root.position;
+            Debug.Log("[p.d] Destroying: " + hit.transform.name);
+            
+            GameObject hitObj = hit.transform.GetComponentInParent<PlaceableHolder>().gameObject;
+            if (hitObj == null) hitObj = hit.transform.GetComponentInChildren<PlaceableHolder>().gameObject;
+            
+            if (hitObj.GetComponent<PlaceableHolder>().PlaceableData.isDestructible == false) return;
+            
+            Debug.Log("[p] Destroying: " + hitObj.name);
+            Destroy(hitObj);
+            
+            //REVERSE OF PREVIOUS
+            loc.y = offset.y;
+            loc.x -= offset.x;
+            loc.z -= offset.z;
+
+            SpawnList[(int) loc.x,(int) loc.y].isPlaced = false;
+            SpawnList[(int) loc.x,(int) loc.y].Item = null;
+            
+            return;
+        }
+    }
+
+    public bool isBorderWall(int x, int y)
+    {
+        //y == 0 OR y == max
+        // x can by any number
+        
+        //x == 0 or x == max
+        //y can be any number
+
+        if (y == 0 || y == WallList.GetLength(1)) return true;
+        if (x == 0 || x == WallList.GetLength(0)) return true;
+        return false;
     }
     
     public void DrawBox(Vector3 pos, Quaternion rot, Vector3 scale, Color c)

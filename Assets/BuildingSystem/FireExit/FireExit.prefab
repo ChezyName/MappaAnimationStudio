@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8452548214040262411}
+  - component: {fileID: 3848353259190803268}
   m_Layer: 0
   m_Name: FireExit
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 4326232932812449355}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3848353259190803268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769227276531465800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42727681542ddaa40b081e86409509f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlaceableData: {fileID: 11400000, guid: f760fdbeb1564134cbc793b6aa5a42de, type: 2}
 --- !u!1 &6681878316007602572
 GameObject:
   m_ObjectHideFlags: 0
@@ -47,7 +61,7 @@ GameObject:
   - component: {fileID: 5283412306666867884}
   - component: {fileID: 2548146778857427251}
   m_Layer: 7
-  m_Name: FireExit
+  m_Name: FireExitModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

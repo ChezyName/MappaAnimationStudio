@@ -15,3 +15,6 @@ MonoBehaviour:
   Spawnable: {fileID: 6958214170064596340, guid: c94dd4c4c60d74c40881e77d9039b668,
     type: 3}
   isWall: 1
+  Cost: 0
+  Name: Wall
+  Description: A Simple Wall

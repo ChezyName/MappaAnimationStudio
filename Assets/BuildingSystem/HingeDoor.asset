@@ -16,3 +16,5 @@ MonoBehaviour:
     type: 3}
   isWall: 1
   Cost: 0
+  Name: Hinge Door
+  Description: A Door That Employees Can Walk Thru
