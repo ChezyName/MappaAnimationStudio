@@ -321,6 +321,8 @@ public class GridPosition : MonoBehaviour
                 int y = (int) pos.z + (int) -BottomLeftCornerXY.y;
                 
                 //Debug.Log(x + ", " + y);
+                
+                Debug.Log("Placing @ " + x + ", " + y);
 
                 //Debug.Log("Placing Something!");
                 if (Spawnable.isWall)
@@ -411,41 +413,49 @@ public class GridPosition : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 99999, Wall))
         {
             //Destroy This Object [WALL]
-            Vector3 loc = hit.transform.root.position;
-            //REVERSE OF PREVIOUS
-            loc.y = offset.y;
-            loc.x -= offset.x;
-            loc.z -= offset.z;
+
             
+            //BUGGED
             //if(isBorderWall((int) loc.x,(int) loc.y)) return;
-            
-            Debug.Log("[w.d] Destroying: " + hit.transform.name);
             
             GameObject hitObj = hit.transform.GetComponentInParent<PlaceableHolder>().gameObject;
             if (hitObj == null) hitObj = hit.transform.GetComponentInChildren<PlaceableHolder>().gameObject;
 
             if (hitObj.GetComponent<PlaceableHolder>().PlaceableData.isDestructible == false) return;
+
+            Vector3 loc = hitObj.GetComponent<PlaceableHolder>().transform.position;
+            //REVERSE OF PREVIOUS
+            loc.y = offset.y;
+            loc.x -= offset.x;
+            loc.z -= offset.z;
+            
+            loc.x += -BottomLeftCornerXY.x;
+            loc.z += -BottomLeftCornerXY.y;
+            
+            Debug.Log("Destroying @ " + loc.x + ", " + loc.z);
             
             Debug.Log("[w] Destroying: " + hitObj.name);
             Destroy(hitObj);
             
 
-            WallList[(int) loc.x,(int) loc.y].isPlaced = false;
-            WallList[(int) loc.x,(int) loc.y].Item = null;
+            WallList[(int) loc.x,(int) loc.z].isPlaced = false;
+            WallList[(int) loc.x,(int) loc.z].Item = null;
             
             return;
         }
         
         if (Physics.Raycast(ray, out hit, 99999, Placeable))
         {
-            //Destroy This Object [PLACEABLE]
-            Vector3 loc = hit.transform.root.position;
-            Debug.Log("[p.d] Destroying: " + hit.transform.name);
-            
             GameObject hitObj = hit.transform.GetComponentInParent<PlaceableHolder>().gameObject;
             if (hitObj == null) hitObj = hit.transform.GetComponentInChildren<PlaceableHolder>().gameObject;
             
             if (hitObj.GetComponent<PlaceableHolder>().PlaceableData.isDestructible == false) return;
+            
+            Vector3 loc = hitObj.GetComponent<PlaceableHolder>().transform.position;
+            //REVERSE OF PREVIOUS
+            loc.y = offset.y;
+            loc.x -= offset.x;
+            loc.z -= offset.z;
             
             Debug.Log("[p] Destroying: " + hitObj.name);
             Destroy(hitObj);
@@ -454,9 +464,12 @@ public class GridPosition : MonoBehaviour
             loc.y = offset.y;
             loc.x -= offset.x;
             loc.z -= offset.z;
+            
+            loc.x += -BottomLeftCornerXY.x;
+            loc.z += -BottomLeftCornerXY.y;
 
-            SpawnList[(int) loc.x,(int) loc.y].isPlaced = false;
-            SpawnList[(int) loc.x,(int) loc.y].Item = null;
+            SpawnList[(int) loc.x,(int) loc.z].isPlaced = false;
+            SpawnList[(int) loc.x,(int) loc.z].Item = null;
             
             return;
         }
