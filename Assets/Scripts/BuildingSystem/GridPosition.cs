@@ -322,7 +322,7 @@ public class GridPosition : MonoBehaviour
                 
                 //Debug.Log(x + ", " + y);
                 
-                Debug.Log("Placing @ " + x + ", " + y);
+                Debug.Log("Placing @ " + x + ", " + y + " > " + RotationModifier);
 
                 //Debug.Log("Placing Something!");
                 if (Spawnable.isWall)
@@ -413,10 +413,6 @@ public class GridPosition : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 99999, Wall))
         {
             //Destroy This Object [WALL]
-
-            
-            //BUGGED
-            //if(isBorderWall((int) loc.x,(int) loc.y)) return;
             
             GameObject hitObj = hit.transform.GetComponentInParent<PlaceableHolder>().gameObject;
             if (hitObj == null) hitObj = hit.transform.GetComponentInChildren<PlaceableHolder>().gameObject;
@@ -433,6 +429,8 @@ public class GridPosition : MonoBehaviour
             loc.z += -BottomLeftCornerXY.y;
             
             Debug.Log("Destroying @ " + loc.x + ", " + loc.z);
+            if(isBorderWall((int) loc.x,(int) loc.z)) return;
+            
             
             Debug.Log("[w] Destroying: " + hitObj.name);
             Destroy(hitObj);
@@ -482,9 +480,19 @@ public class GridPosition : MonoBehaviour
         
         //x == 0 or x == max
         //y can be any number
+        
+        int ry = y == 0 ? 1 : 3;
+        int rx = x == 0 ? 2 : 4;
 
-        if (y == 0 || y == WallList.GetLength(1)) return true;
-        if (x == 0 || x == WallList.GetLength(0)) return true;
+        if (y == 0 || y == WallList.GetLength(1) - 1)
+        {
+            if (WallList[x, y].Rotation == ry) return true;
+        }
+        if (x == 0 || x == WallList.GetLength(0) - 1)
+        {
+            if (WallList[x, y].Rotation == rx) return true;
+        }
+        
         return false;
     }
     
