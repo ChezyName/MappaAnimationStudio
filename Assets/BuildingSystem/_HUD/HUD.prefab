@@ -149,6 +149,7 @@ MonoBehaviour:
   Placeables:
   - {fileID: 11400000, guid: 13967c785bbe95b408693dc20304b0de, type: 2}
   - {fileID: 11400000, guid: 5aa8296f562d532469edc9672682f601, type: 2}
+  - {fileID: 11400000, guid: 8eeb29e9a05b2a7429f4ebfbe26d917a, type: 2}
   PlaceableButton: {fileID: 3932892064450070118, guid: 9a42b6a3be01b6e4a8d7f483b2e9a654,
     type: 3}
   ButtonParent: {fileID: 6068016365043805318}
