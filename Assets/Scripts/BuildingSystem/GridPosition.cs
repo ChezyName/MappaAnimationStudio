@@ -49,7 +49,6 @@ public class GridPosition : MonoBehaviour
     private Vector2 TopRightCornerXY = new Vector2(10, 10);
 
     [SerializeField] private LayerMask Wall = 7;
-    [SerializeField] private LayerMask Placeable = 8;
 
     //0 = 0
     //1 = 90
@@ -434,42 +433,18 @@ public class GridPosition : MonoBehaviour
             
             Debug.Log("[w] Destroying: " + hitObj.name);
             Destroy(hitObj);
-            
 
-            WallList[(int) loc.x,(int) loc.z].isPlaced = false;
-            WallList[(int) loc.x,(int) loc.z].Item = null;
-            
-            return;
-        }
-        
-        if (Physics.Raycast(ray, out hit, 99999, Placeable))
-        {
-            GameObject hitObj = hit.transform.GetComponentInParent<PlaceableHolder>().gameObject;
-            if (hitObj == null) hitObj = hit.transform.GetComponentInChildren<PlaceableHolder>().gameObject;
-            
-            if (hitObj.GetComponent<PlaceableHolder>().PlaceableData.isDestructible == false) return;
-            
-            Vector3 loc = hitObj.GetComponent<PlaceableHolder>().transform.position;
-            //REVERSE OF PREVIOUS
-            loc.y = offset.y;
-            loc.x -= offset.x;
-            loc.z -= offset.z;
-            
-            Debug.Log("[p] Destroying: " + hitObj.name);
-            Destroy(hitObj);
-            
-            //REVERSE OF PREVIOUS
-            loc.y = offset.y;
-            loc.x -= offset.x;
-            loc.z -= offset.z;
-            
-            loc.x += -BottomLeftCornerXY.x;
-            loc.z += -BottomLeftCornerXY.y;
 
-            SpawnList[(int) loc.x,(int) loc.z].isPlaced = false;
-            SpawnList[(int) loc.x,(int) loc.z].Item = null;
-            
-            return;
+            if (hitObj.GetComponent<PlaceableHolder>().PlaceableData.isWall)
+            {
+                WallList[(int) loc.x,(int) loc.z].isPlaced = false;
+                WallList[(int) loc.x,(int) loc.z].Item = null;
+            }
+            else
+            {
+                SpawnList[(int) loc.x,(int) loc.z].isPlaced = false;
+                SpawnList[(int) loc.x,(int) loc.z].Item = null;
+            }
         }
     }
 

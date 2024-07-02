@@ -377,6 +377,11 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 1196772334}
+    - target: {fileID: 6815987862086620864, guid: f3dca54ad8c30d8428e71e69f9f809f4,
+        type: 3}
+      propertyPath: Wall.m_Bits
+      value: 384
+      objectReference: {fileID: 0}
     - target: {fileID: 8338365929850120487, guid: f3dca54ad8c30d8428e71e69f9f809f4,
         type: 3}
       propertyPath: m_Name
