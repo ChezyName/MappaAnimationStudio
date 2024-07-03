@@ -23,6 +23,13 @@ public class WorkerSpawner : MonoBehaviour
         if (GGS == null) GGS = GlobalGameState.getGameState();
         else GGS.addWorker(newWorker);
     }
+    
+    public GameObject SpawnWorkerReturn()
+    {
+        //Spawns a worker at location with self as Parent
+        GameObject newWorker = Instantiate(Worker, transform.position, transform.rotation, transform);
+        return newWorker;
+    }
 
     void Update()
     {
