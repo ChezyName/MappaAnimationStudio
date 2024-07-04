@@ -1,17 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class AnimationMachine : MonoBehaviour
 {
     public struct MachineStats
     {
-        public int MoneyMade;
+        public float MoneyMade;
         public int UpgradeLvl;
-        public float Stress;
     }
 
-    public MachineStats Stats;
+    private MachineStats Stats;
+    public TextMeshProUGUI Text;
     public GameObject Worker;
 
     public void SpawnWorker()
@@ -27,8 +29,35 @@ public class AnimationMachine : MonoBehaviour
         }
     }
 
+    public void doUpgrade()
+    {
+        Stats.UpgradeLvl += 1;
+        setStats();
+    }
+
+    private void Start()
+    {
+        Stats.UpgradeLvl = 1;
+        setStats();
+    }
+
     public void Work()
     {
-        Debug.Log("Working!!!!");
+        Stats.MoneyMade += Stats.UpgradeLvl * Time.deltaTime;
+        setStats();
+    }
+
+    public void setStats()
+    {
+        Text.text = "Money Made: $" + Stats.MoneyMade.ToString("0.00") + "\n" +
+               "Upgrade Lvl: " + Stats.UpgradeLvl;
+    }
+
+    private void OnDestroy()
+    {
+        if (Worker != null)
+        {
+            Destroy(Worker);
+        }
     }
 }

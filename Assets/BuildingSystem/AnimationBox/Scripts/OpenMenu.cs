@@ -16,6 +16,12 @@ public class OpenMenu : MonoBehaviour
         Target.SetActive(isOpened);
     }
 
+    public void Hide()
+    {
+        isOpened = false;
+        Target.SetActive(isOpened);
+    }
+
     private void OnMouseOver()
     {
         //Enables if Right Click Object
@@ -25,6 +31,15 @@ public class OpenMenu : MonoBehaviour
             
             //Set HUD Enabled or Not
             Target.SetActive(isOpened);
+            
+            //Hide All Others
+            foreach (OpenMenu menu in FindObjectsOfType<OpenMenu>())
+            {
+                if (menu != this)
+                {
+                    menu.Hide();
+                }
+            }
         }
     }
 }
