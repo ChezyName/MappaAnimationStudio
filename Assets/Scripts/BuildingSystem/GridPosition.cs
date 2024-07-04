@@ -303,10 +303,10 @@ public class GridPosition : MonoBehaviour
             
             if (Input.GetMouseButton(0))
             {
-                int cMoney = GlobalGameState.getGameState().getMoney();
+                float cMoney = GlobalGameState.getGameState().getMoney();
                 if (cMoney < Spawnable.Cost)
                 {
-                    //Debug.Log("You Are Broke");
+                    Debug.Log("You Are Broke");
                     return;
                 }
                 

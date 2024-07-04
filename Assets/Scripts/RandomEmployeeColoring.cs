@@ -14,6 +14,7 @@ public class RandomEmployeeColoring : MonoBehaviour
             // 2 = hair
             // 0 = shirt
 
+            Random.InitState(System.DateTime.Now.Millisecond);
             renderer.materials[0].color = new Color(Random.Range(0, 1), Random.Range(0, 1), Random.Range(0, 1));
             renderer.materials[3].color = new Color(Random.Range(0, 1), Random.Range(0, 1), Random.Range(0, 1));
             renderer.materials[2].color = new Color(Random.Range(0, 1), Random.Range(0, 1), Random.Range(0, 1));

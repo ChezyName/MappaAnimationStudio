@@ -12,6 +12,8 @@ public class AnimationMachine : MonoBehaviour
         public int UpgradeLvl;
     }
 
+    private GlobalGameState GGS;
+    
     private MachineStats Stats;
     public TextMeshProUGUI Text;
     public GameObject Worker;
@@ -38,12 +40,14 @@ public class AnimationMachine : MonoBehaviour
     private void Start()
     {
         Stats.UpgradeLvl = 1;
+        GGS = GlobalGameState.getGameState();
         setStats();
     }
 
     public void Work()
     {
         Stats.MoneyMade += Stats.UpgradeLvl * Time.deltaTime;
+        GGS.addMoney(Stats.UpgradeLvl * Time.deltaTime);
         setStats();
     }
 

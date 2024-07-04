@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GlobalGameState : MonoBehaviour
 {
-    private int Money;
+    private float Money;
     private static GlobalGameState GGS;
     private List<GameObject> Workers;
     public bool isBuildMode = false;
@@ -30,12 +30,12 @@ public class GlobalGameState : MonoBehaviour
         return GGS;
     }
 
-    public int getMoney()
+    public float getMoney()
     {
         return Money;
     }
 
-    public void addMoney(int Dollars)
+    public void addMoney(float Dollars)
     {
         Money += Dollars;
     }

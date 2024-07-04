@@ -400,6 +400,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3344121115036700844, guid: 00bab36919e8ef24385c28f0a8e23161,
+        type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 026bc70478aed7d46a1ce3b602164d0c,
+        type: 2}
     - target: {fileID: 3475251822842328240, guid: 00bab36919e8ef24385c28f0a8e23161,
         type: 3}
       propertyPath: m_Name
@@ -586,13 +592,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7066459234480926636, guid: 4ea71c1b3e41c7e4e907bd205b74f925,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8344538754169353225, guid: 4ea71c1b3e41c7e4e907bd205b74f925,
         type: 3}
       propertyPath: m_Name
       value: WorkerSpawnLoc
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7017990037322376185, guid: 4ea71c1b3e41c7e4e907bd205b74f925, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ea71c1b3e41c7e4e907bd205b74f925, type: 3}
