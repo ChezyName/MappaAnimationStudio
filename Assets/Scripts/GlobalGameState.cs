@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class GlobalGameState : MonoBehaviour
 {
-    private float Money;
+    private float Money = 250000;
     private static GlobalGameState GGS;
     private List<GameObject> Workers;
     public bool isBuildMode = false;
     public Placeable currentPlaceable;
+    public int AnimationMachines;
     
     private void Awake()
     {

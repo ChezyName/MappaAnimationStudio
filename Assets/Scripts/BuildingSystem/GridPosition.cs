@@ -268,6 +268,7 @@ public class GridPosition : MonoBehaviour
                 
                 Destroy(Vis.GetComponentInChildren<HingeJoint>());
                 Destroy(Vis.GetComponentInChildren<Rigidbody>());
+                Destroy(Vis.GetComponentInChildren<AnimationMachine>());
             }
             
             if (Vis == null)
@@ -290,6 +291,7 @@ public class GridPosition : MonoBehaviour
                 
                 Destroy(Vis.GetComponentInChildren<HingeJoint>());
                 Destroy(Vis.GetComponentInChildren<Rigidbody>());
+                Destroy(Vis.GetComponentInChildren<AnimationMachine>());
             }
             else
             {

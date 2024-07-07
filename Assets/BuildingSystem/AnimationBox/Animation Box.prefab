@@ -674,6 +674,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text: {fileID: 7308327357979461593}
+  WorkerButton: {fileID: 8525301727432934658}
+  UpgradeText: {fileID: 1915030511541497453}
+  WorkerText: {fileID: 7780033202412774060}
   Worker: {fileID: 0}
 --- !u!1 &3622128343201176888
 GameObject:
