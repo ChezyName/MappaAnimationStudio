@@ -24,6 +24,8 @@ public class AnimationMachine : MonoBehaviour
     public TextMeshProUGUI Text;
 
     public Button WorkerButton;
+    public Button UpgradeButton;
+    
     public TextMeshProUGUI UpgradeText;
     public TextMeshProUGUI WorkerText;
     
@@ -60,17 +62,25 @@ public class AnimationMachine : MonoBehaviour
                 Math.Pow(Stats.UpgradeLvl + 1,2)
                 ));
 
-        UpgradeText.text = "Upgrade: $" + Stats.UpgradeCost.ToString("0.00");
+        if(Stats.UpgradeLvl < 10) UpgradeText.text = "Upgrade: $" + Stats.UpgradeCost.ToString("0.00");
     }
 
     public void doUpgrade()
     {
+        if (Stats.UpgradeLvl == 10) return;
+        
         if (GGS.getMoney() >= Stats.UpgradeCost)
         {
             Stats.UpgradeLvl += 1;
             setStats();
             GGS.addMoney(-Stats.UpgradeCost);
             UpdateUpgradeCost();
+
+            if (Stats.UpgradeLvl == 10)
+            {
+                UpgradeText.text = "MAX UPGRADE";
+                UpgradeButton.enabled = false;
+            }
         }
     }
 
@@ -96,7 +106,7 @@ public class AnimationMachine : MonoBehaviour
     public void setStats()
     {
         Text.text = "Money Made: $" + Stats.MoneyMade.ToString("0.00") + "\n" +
-               "Upgrade Lvl: " + Stats.UpgradeLvl;
+               "Upgrade Lvl: " + (Stats.UpgradeLvl == 10 ? "MAX" : Stats.UpgradeLvl);
     }
 
     void UpdateAllOtherMachines()

@@ -359,6 +359,8 @@ public class GridPosition : MonoBehaviour
                         SpawnList[x,y].Item = spawned;
                     }
                 }
+                
+                GlobalGameState.getGameState().addMoney(-Spawnable.Cost);
             }
             
             if (Input.GetMouseButton(1))
