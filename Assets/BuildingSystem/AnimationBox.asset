@@ -16,6 +16,6 @@ MonoBehaviour:
     type: 3}
   isWall: 0
   isDestructible: 1
-  Cost: 0
+  Cost: 500
   Name: Animation Box
   Description: Where Workers Work

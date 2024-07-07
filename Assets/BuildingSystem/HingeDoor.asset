@@ -15,6 +15,7 @@ MonoBehaviour:
   Spawnable: {fileID: 7822855089342523994, guid: ec6b0f0b8edb57c4292b3b6986c459de,
     type: 3}
   isWall: 1
-  Cost: 0
+  isDestructible: 1
+  Cost: 30
   Name: Hinge Door
   Description: A Door That Employees Can Walk Thru
