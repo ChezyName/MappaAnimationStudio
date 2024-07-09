@@ -9,6 +9,7 @@ public class GlobalGameState : MonoBehaviour
     public bool isBuildMode = false;
     public Placeable currentPlaceable;
     public int AnimationMachines;
+    public int UpgradeMachines;
     
     private void Awake()
     {

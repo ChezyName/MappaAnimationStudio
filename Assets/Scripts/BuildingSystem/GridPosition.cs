@@ -269,6 +269,8 @@ public class GridPosition : MonoBehaviour
                 Destroy(Vis.GetComponentInChildren<HingeJoint>());
                 Destroy(Vis.GetComponentInChildren<Rigidbody>());
                 Destroy(Vis.GetComponentInChildren<AnimationMachine>());
+                Destroy(Vis.GetComponentInChildren<RandomRotator>().gameObject);
+                Destroy(Vis.GetComponentInChildren<AnimationUpgrader>());
             }
             
             if (Vis == null)
@@ -292,6 +294,8 @@ public class GridPosition : MonoBehaviour
                 Destroy(Vis.GetComponentInChildren<HingeJoint>());
                 Destroy(Vis.GetComponentInChildren<Rigidbody>());
                 Destroy(Vis.GetComponentInChildren<AnimationMachine>());
+                Destroy(Vis.GetComponentInChildren<RandomRotator>().gameObject);
+                Destroy(Vis.GetComponentInChildren<AnimationUpgrader>());
             }
             else
             {

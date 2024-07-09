@@ -30,6 +30,7 @@ public class AnimationMachine : MonoBehaviour
     public TextMeshProUGUI WorkerText;
     
     public GameObject Worker;
+    public bool Working = false;
 
     public void SpawnWorker()
     {
@@ -101,11 +102,12 @@ public class AnimationMachine : MonoBehaviour
         Stats.MoneyMade += AddMoneyAmount * Time.deltaTime;
         GGS.addMoney(AddMoneyAmount * Time.deltaTime);
         setStats();
+        Working = true;
     }
 
     public void setStats()
     {
-        Text.text = "Money Made: $" + Stats.MoneyMade.ToString("0.00") + "\n" +
+        Text.text = "Money Made: $" + MoneyString.MoneyToString(Stats.MoneyMade) + "\n" +
                "Upgrade Lvl: " + (Stats.UpgradeLvl == 10 ? "MAX" : Stats.UpgradeLvl);
     }
 

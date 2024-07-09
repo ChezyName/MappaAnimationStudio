@@ -309,6 +309,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 8534843167916152751, guid: 3bad6675f23759a47a08e0d2476bb743,
+        type: 3}
+      propertyPath: Placeables.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8534843167916152751, guid: 3bad6675f23759a47a08e0d2476bb743,
+        type: 3}
+      propertyPath: Placeables.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: fb04f78785144304dbf52ffa40ae1d43,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

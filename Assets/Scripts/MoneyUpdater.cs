@@ -17,6 +17,6 @@ public class MoneyUpdater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Text.text = "$"+GlobalGameState.getGameState().getMoney().ToString("0.00");
+        Text.text = MoneyString.MoneyToString(GlobalGameState.getGameState().getMoney());
     }
 }
