@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ public class AnimationMachine : MonoBehaviour
     public struct MachineStats
     {
         public float MoneyMade;
+        public float MoneyPerSec;
+        
         public int UpgradeLvl;
 
         public float UpgradeCost;
@@ -31,6 +34,11 @@ public class AnimationMachine : MonoBehaviour
     
     public GameObject Worker;
     public bool Working = false;
+
+    public MachineStats getStats()
+    {
+        return Stats;
+    }
 
     public void SpawnWorker()
     {
@@ -63,7 +71,7 @@ public class AnimationMachine : MonoBehaviour
                 Math.Pow(Stats.UpgradeLvl + 1,2)
                 ));
 
-        if(Stats.UpgradeLvl < 10) UpgradeText.text = "Upgrade: $" + Stats.UpgradeCost.ToString("0.00");
+        if(Stats.UpgradeLvl < 10) UpgradeText.text = "Upgrade: " + Stats.UpgradeCost.ToString("0.00");
     }
 
     public void doUpgrade()
@@ -99,6 +107,7 @@ public class AnimationMachine : MonoBehaviour
     public void Work()
     {
         float AddMoneyAmount = (float)Math.Pow(Stats.UpgradeLvl, 2);
+        Stats.MoneyPerSec = AddMoneyAmount;
         Stats.MoneyMade += AddMoneyAmount * Time.deltaTime;
         GGS.addMoney(AddMoneyAmount * Time.deltaTime);
         setStats();
@@ -107,8 +116,9 @@ public class AnimationMachine : MonoBehaviour
 
     public void setStats()
     {
-        Text.text = "Money Made: $" + MoneyString.MoneyToString(Stats.MoneyMade) + "\n" +
-               "Upgrade Lvl: " + (Stats.UpgradeLvl == 10 ? "MAX" : Stats.UpgradeLvl);
+        Text.text = "Money Per Sec: " + MoneyString.MoneyToString(Stats.MoneyPerSec) + "\n" + 
+                "Money Made: " + MoneyString.MoneyToString(Stats.MoneyMade) + "\n\n" +
+                "Upgrade Lvl: " + (Stats.UpgradeLvl == 10 ? "MAX" : Stats.UpgradeLvl);
     }
 
     void UpdateAllOtherMachines()

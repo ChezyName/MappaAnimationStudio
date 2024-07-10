@@ -14,10 +14,11 @@ public class AnimationUpgrader : MonoBehaviour
     private float NextUpgradeCost = 0;
     private int UpgradeLvl = 0;
     private float MoneyMade = 0;
+    private float MoneyPerSec;
 
     private const int MAX_LVL = 10;
     private const float UPGRADE_COST_DEFAULT = 500;
-    private const float MONEY_PER_SEC = 300;
+    private const float MONEY_PER_SEC = 50;
     
     // Start is called before the first frame update
     void Start()
@@ -46,7 +47,8 @@ public class AnimationUpgrader : MonoBehaviour
 
     public void setText()
     {
-        Stats.text = "Upgrade Lvl: " + (UpgradeLvl == MAX_LVL ? "MAX" : UpgradeLvl) + "\n" +
+        Stats.text = "Upgrade Lvl: " + (UpgradeLvl == MAX_LVL ? "MAX" : UpgradeLvl) + "\n\n" +
+                     "Money Per Sec: " + "\n" + MoneyString.MoneyToString(MoneyPerSec) +"\n"+
                      "Money Made: " + "\n" + MoneyString.MoneyToString(MoneyMade) +
                      (MoneyMade == 0 ? "\nMachine Needs Animation Machines To Work!" : "");
     }
@@ -54,21 +56,34 @@ public class AnimationUpgrader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int count = 0;
+        int upgrades = 1;
+        int count = 1;
         foreach (Collider c in Physics.OverlapSphere(Spinner.transform.position, Radius))
         {
             if ( c.GetComponent<AnimationMachine>() && c.GetComponent<AnimationMachine>().Worker != null ||
                  c.GetComponentInParent<AnimationMachine>() && c.GetComponentInParent<AnimationMachine>().Worker != null || 
                  c.GetComponentInChildren<AnimationMachine>() && c.GetComponentInChildren<AnimationMachine>().Worker != null)
             {
+                int Upgrade = 1;
+
+                //Get Upgrade 
+                if (c.GetComponent<AnimationMachine>())
+                    Upgrade = c.GetComponent<AnimationMachine>().getStats().UpgradeLvl;
+                else if (c.GetComponentInParent<AnimationMachine>())
+                    Upgrade = c.GetComponentInParent<AnimationMachine>().getStats().UpgradeLvl;
+                else if (c.GetComponentInChildren<AnimationMachine>())
+                    Upgrade = c.GetComponentInChildren<AnimationMachine>().getStats().UpgradeLvl;
+                
+                upgrades += Upgrade;
                 count++;
             }
         }
 
         //Add The Cash
-        float MoneyThisFrame = (float) (MONEY_PER_SEC * Math.Pow(count, 2) / 2);
-        MoneyMade += MoneyThisFrame * Time.deltaTime;
-        GlobalGameState.getGameState().addMoney(MoneyThisFrame * Time.deltaTime);
+        MoneyPerSec = (float) (MONEY_PER_SEC * Math.Pow(upgrades + UpgradeLvl/count, 2));
+        MoneyPerSec = Math.Clamp(MoneyPerSec, 0, 100000);
+        MoneyMade += MoneyPerSec * Time.deltaTime;
+        GlobalGameState.getGameState().addMoney(MoneyPerSec * Time.deltaTime);
         setText();
     }
 }
