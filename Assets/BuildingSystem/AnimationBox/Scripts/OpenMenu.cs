@@ -7,6 +7,7 @@ using UnityEngine;
 public class OpenMenu : MonoBehaviour
 {
     private bool isOpened = false;
+    public GameObject Shower;
 
     [SerializeField] private GameObject Target;
     
@@ -14,12 +15,14 @@ public class OpenMenu : MonoBehaviour
     void Start()
     {
         Target.SetActive(isOpened);
+        if(Shower != null) Shower.SetActive(isOpened);
     }
 
     public void Hide()
     {
         isOpened = false;
         Target.SetActive(isOpened);
+        if(Shower != null) Shower.SetActive(isOpened);
     }
 
     private void OnMouseOver()
@@ -31,6 +34,7 @@ public class OpenMenu : MonoBehaviour
             
             //Set HUD Enabled or Not
             Target.SetActive(isOpened);
+            if(Shower != null) Shower.SetActive(isOpened);
             
             //Hide All Others
             foreach (OpenMenu menu in FindObjectsOfType<OpenMenu>())

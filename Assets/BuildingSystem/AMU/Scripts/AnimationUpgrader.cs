@@ -56,8 +56,8 @@ public class AnimationUpgrader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int upgrades = 1;
-        int count = 1;
+        int upgrades = 0;
+        int count = 0;
         foreach (Collider c in Physics.OverlapSphere(Spinner.transform.position, Radius))
         {
             if ( c.GetComponent<AnimationMachine>() && c.GetComponent<AnimationMachine>().Worker != null ||
@@ -80,7 +80,7 @@ public class AnimationUpgrader : MonoBehaviour
         }
 
         //Add The Cash
-        MoneyPerSec = (float) (MONEY_PER_SEC * Math.Pow(upgrades + UpgradeLvl/count, 2));
+        MoneyPerSec = count > 0 ? (float)(MONEY_PER_SEC * Math.Pow((upgrades + UpgradeLvl) / count, 2)) : 0;
         MoneyPerSec = Math.Clamp(MoneyPerSec, 0, 100000);
         MoneyMade += MoneyPerSec * Time.deltaTime;
         GlobalGameState.getGameState().addMoney(MoneyPerSec * Time.deltaTime);
