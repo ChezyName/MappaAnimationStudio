@@ -43,6 +43,7 @@ public class AnimationMachine : MonoBehaviour
     public void SpawnWorker()
     {
         if (GGS.getMoney() < WORKER_COST_DEFAULT) return;
+        GGS.addMoney(-WORKER_COST_DEFAULT);
         
         if (Worker != null) return;
 

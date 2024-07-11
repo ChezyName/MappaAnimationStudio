@@ -345,6 +345,8 @@ public class GridPosition : MonoBehaviour
                         WallList[x,y].isPlaced = true;
                         WallList[x,y].Item = spawned;
                         WallList[x, y].Rotation = RotationModifier;
+                        
+                        GlobalGameState.getGameState().addMoney(-Spawnable.Cost);
                     }
                 }
                 else
@@ -361,10 +363,10 @@ public class GridPosition : MonoBehaviour
 
                         SpawnList[x,y].isPlaced = true;
                         SpawnList[x,y].Item = spawned;
+                        
+                        GlobalGameState.getGameState().addMoney(-Spawnable.Cost);
                     }
                 }
-                
-                GlobalGameState.getGameState().addMoney(-Spawnable.Cost);
             }
             
             if (Input.GetMouseButton(1))
@@ -425,6 +427,8 @@ public class GridPosition : MonoBehaviour
             if (hitObj == null) hitObj = hit.transform.GetComponentInChildren<PlaceableHolder>().gameObject;
 
             if (hitObj.GetComponent<PlaceableHolder>().PlaceableData.isDestructible == false) return;
+            
+            GlobalGameState.getGameState().addMoney(hitObj.GetComponent<PlaceableHolder>().PlaceableData.Cost);
 
             Vector3 loc = hitObj.GetComponent<PlaceableHolder>().transform.position;
             //REVERSE OF PREVIOUS

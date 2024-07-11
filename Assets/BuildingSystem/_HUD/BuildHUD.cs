@@ -24,7 +24,7 @@ public class BuildHUD : MonoBehaviour
             Button b = Instantiate(PlaceableButton, Vector3.zero, Quaternion.identity) as Button;
             b.transform.parent = ButtonParent.transform;
             b.onClick.AddListener(delegate{onPlaceableButtonClicked(placeable);});
-            b.GetComponentInChildren<TextMeshProUGUI>().text = placeable.name;
+            b.GetComponentInChildren<TextMeshProUGUI>().text = placeable.name + "\n" + placeable.Cost;
         }
     }
 
