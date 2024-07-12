@@ -107,7 +107,8 @@ public class AnimationMachine : MonoBehaviour
 
     public void Work()
     {
-        float AddMoneyAmount = (float)Math.Pow(Stats.UpgradeLvl, 2) + (float)Math.Pow(GGS.AnimationMachines, 2);
+        float AddMoneyAmount =
+            (float)Math.Sqrt(Math.Pow(GGS.AnimationMachines + (float)Math.Pow(Stats.UpgradeLvl, 2), 2));
         Stats.MoneyPerSec = AddMoneyAmount;
         Stats.MoneyMade += AddMoneyAmount * Time.deltaTime;
         GGS.addMoney(AddMoneyAmount * Time.deltaTime);

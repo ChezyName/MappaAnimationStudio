@@ -16,6 +16,12 @@ public class AnimationUpgrader : MonoBehaviour
     private float MoneyMade = 0;
     private float MoneyPerSec;
 
+    public float getMPS()
+    {
+        return MoneyPerSec;
+        
+    }
+
     private const int MAX_LVL = 10;
     private const float UPGRADE_COST_DEFAULT = 500;
     private const float MONEY_PER_SEC = 50;
@@ -80,7 +86,8 @@ public class AnimationUpgrader : MonoBehaviour
         }
 
         //Add The Cash
-        MoneyPerSec = count > 0 ? (float)(MONEY_PER_SEC * Math.Pow((upgrades + UpgradeLvl) / count, 2)) : 0;
+        MoneyPerSec = count > 0 ? (float)(MONEY_PER_SEC * Math.Pow((upgrades + UpgradeLvl 
+            + GlobalGameState.getGameState().UpgradeMachines) / count, 2)) : 0;
         MoneyPerSec = Math.Clamp(MoneyPerSec, 0, 100000);
         MoneyMade += MoneyPerSec * Time.deltaTime;
         GlobalGameState.getGameState().addMoney(MoneyPerSec * Time.deltaTime);

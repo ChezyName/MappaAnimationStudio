@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GlobalGameState : MonoBehaviour
 {
     private float Money = 2500;
+    public float MoneyPerSec = 0;
+    
     private static GlobalGameState GGS;
     private List<GameObject> Workers;
     public bool isBuildMode = false;
@@ -20,6 +23,23 @@ public class GlobalGameState : MonoBehaviour
             GGS = this;
             DontDestroyOnLoad(this);
         }
+    }
+
+    private void Update()
+    {
+        //get all machines
+        float cMoneyPerSec = 0;
+
+        foreach (AnimationMachine Machine in FindObjectsOfType<AnimationMachine>())
+        {
+            cMoneyPerSec += Machine.getStats().MoneyPerSec;
+        }
+        foreach (AnimationUpgrader Machine in FindObjectsOfType<AnimationUpgrader>())
+        {
+            cMoneyPerSec += Machine.getMPS();
+        }
+
+        MoneyPerSec = cMoneyPerSec;
     }
 
     public void addWorker(GameObject newWorker)

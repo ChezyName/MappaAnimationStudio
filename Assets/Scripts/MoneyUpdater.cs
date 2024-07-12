@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -17,6 +18,10 @@ public class MoneyUpdater : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Text.text = MoneyString.MoneyToString(GlobalGameState.getGameState().getMoney());
+        float cMoney = GlobalGameState.getGameState().getMoney();
+        float MoneyPerSec = GlobalGameState.getGameState().MoneyPerSec;
+
+        Text.text = MoneyString.MoneyToString(cMoney) + "\n" +
+                    MoneyString.MoneyToString(MoneyPerSec) + "/s";
     }
 }
